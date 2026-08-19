@@ -3258,6 +3258,94 @@ func Test_Message_UnmarshalJSON(t *testing.T) {
 			},
 			isError: false,
 		},
+		{
+			name: "success_poll_option_added",
+			json: `
+{
+    "message_id": 10,
+    "date": 1725000000,
+    "chat": {
+        "id": -1001,
+        "type": "supergroup"
+    },
+    "poll_option_added": {
+        "poll_message": {
+            "message_id": 5,
+            "date": 1725000000,
+            "chat": {
+                "id": -1001,
+                "type": "supergroup"
+            }
+        },
+        "option_text": "x"
+    }
+}
+`,
+			data: &Message{
+				MessageID: 10,
+				Date:      1725000000,
+				Chat: Chat{
+					ID:   -1001,
+					Type: ChatTypeSupergroup,
+				},
+				PollOptionAdded: &PollOptionAdded{
+					PollMessage: &Message{
+						MessageID: 5,
+						Date:      1725000000,
+						Chat: Chat{
+							ID:   -1001,
+							Type: ChatTypeSupergroup,
+						},
+					},
+					OptionText: "x",
+				},
+			},
+			isError: false,
+		},
+		{
+			name: "success_poll_option_deleted",
+			json: `
+{
+    "message_id": 10,
+    "date": 1725000000,
+    "chat": {
+        "id": -1001,
+        "type": "supergroup"
+    },
+    "poll_option_deleted": {
+        "poll_message": {
+            "message_id": 5,
+            "date": 1725000000,
+            "chat": {
+                "id": -1001,
+                "type": "supergroup"
+            }
+        },
+        "option_text": "x"
+    }
+}
+`,
+			data: &Message{
+				MessageID: 10,
+				Date:      1725000000,
+				Chat: Chat{
+					ID:   -1001,
+					Type: ChatTypeSupergroup,
+				},
+				PollOptionDeleted: &PollOptionDeleted{
+					PollMessage: &Message{
+						MessageID: 5,
+						Date:      1725000000,
+						Chat: Chat{
+							ID:   -1001,
+							Type: ChatTypeSupergroup,
+						},
+					},
+					OptionText: "x",
+				},
+			},
+			isError: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -2456,6 +2456,35 @@ type PollOptionAdded struct {
 	OptionTextEntities []MessageEntity `json:"option_text_entities,omitempty"`
 }
 
+// UnmarshalJSON converts JSON to PollOptionAdded
+func (p *PollOptionAdded) UnmarshalJSON(data []byte) error {
+	parser := json.ParserPoll.Get()
+	defer json.ParserPoll.Put(parser)
+
+	value, err := parser.ParseBytes(data)
+	if err != nil {
+		return err
+	}
+
+	type uPollOptionAdded PollOptionAdded
+	var up uPollOptionAdded
+
+	if value.Exists("poll_message") {
+		if value.GetInt("poll_message", "date") == 0 {
+			up.PollMessage = &InaccessibleMessage{}
+		} else {
+			up.PollMessage = &Message{}
+		}
+	}
+
+	if err = json.Unmarshal(data, &up); err != nil {
+		return err
+	}
+	*p = PollOptionAdded(up)
+
+	return nil
+}
+
 // PollOptionDeleted - Describes a service message about an option deleted from a poll.
 type PollOptionDeleted struct {
 	// PollMessage - Optional. Message containing the poll from which the option was deleted, if known. Note
@@ -2471,6 +2500,35 @@ type PollOptionDeleted struct {
 
 	// OptionTextEntities - Optional. Special entities that appear in the option_text
 	OptionTextEntities []MessageEntity `json:"option_text_entities,omitempty"`
+}
+
+// UnmarshalJSON converts JSON to PollOptionDeleted
+func (p *PollOptionDeleted) UnmarshalJSON(data []byte) error {
+	parser := json.ParserPoll.Get()
+	defer json.ParserPoll.Put(parser)
+
+	value, err := parser.ParseBytes(data)
+	if err != nil {
+		return err
+	}
+
+	type uPollOptionAdded PollOptionAdded
+	var up uPollOptionAdded
+
+	if value.Exists("poll_message") {
+		if value.GetInt("poll_message", "date") == 0 {
+			up.PollMessage = &InaccessibleMessage{}
+		} else {
+			up.PollMessage = &Message{}
+		}
+	}
+
+	if err = json.Unmarshal(data, &up); err != nil {
+		return err
+	}
+	*p = PollOptionDeleted(up)
+
+	return nil
 }
 
 // ChatBoostAdded - This object represents a service message about a user boosting a chat.
