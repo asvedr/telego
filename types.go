@@ -11711,7 +11711,7 @@ const (
 	PartnerTypeAffiliateProgram = "affiliate_program"
 	PartnerTypeFragment         = "fragment"
 	PartnerTypeTelegramAds      = "telegram_ads"
-	PartnerTypeTelegramApi      = "telegram_api" //nolint:revive
+	PartnerTypeTelegramApi      = "telegram_api" //revive:disable:var-naming
 	PartnerTypeOther            = "other"
 )
 
@@ -11922,7 +11922,7 @@ func (p *TransactionPartnerTelegramAds) iTransactionPartner() {}
 
 // TransactionPartnerTelegramApi - Describes a transaction with payment for paid broadcasting
 // (https://core.telegram.org/bots/api#paid-broadcasts).
-type TransactionPartnerTelegramApi struct { //nolint:revive
+type TransactionPartnerTelegramApi struct { //revive:disable:var-naming
 	// Type - Type of the transaction partner, always “telegram_api”
 	Type string `json:"type"`
 
