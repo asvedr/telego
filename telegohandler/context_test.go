@@ -5,8 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -173,6 +172,6 @@ func TestContext_Next(t *testing.T) {
 	}
 
 	err := ctx.Next(telego.Update{})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.True(t, run)
 }

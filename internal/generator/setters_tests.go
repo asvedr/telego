@@ -20,7 +20,7 @@ func writeSettersTests(file *os.File, setters tgSetters, noPointerStructs []stri
 import (
 	"testing"
 	
-	"github.com/stretchr/testify/assert"
+	"gitlab.com/asvedr/testify/assert"
 )`)
 	data.WriteString("\n\n")
 

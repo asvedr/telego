@@ -3,7 +3,7 @@ package telego
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"gitlab.com/asvedr/testify/assert"
 )
 
 func TestReplyParameters_Setters(t *testing.T) {

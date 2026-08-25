@@ -10,9 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/valyala/fasthttp"
+	"gitlab.com/asvedr/testify/assert"
 )
 
 var errEmptyData = errors.New("empty data")
@@ -22,13 +21,13 @@ func TestWebhookFastHTTP(t *testing.T) {
 	handler := WebhookFastHTTP(srv, "/", "secret")
 
 	err := handler(func(ctx context.Context, data []byte) error {
-		require.NotNil(t, ctx)
+		assert.NotNil(t, ctx)
 		if len(data) == 0 {
 			return errEmptyData
 		}
 		return nil
 	})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	t.Run("success", func(t *testing.T) {
 		ctx := &fasthttp.RequestCtx{}
@@ -75,13 +74,13 @@ func TestWebhookHTTPServer(t *testing.T) {
 	handler := WebhookHTTPServer(srv, "/", "secret")
 
 	err := handler(func(ctx context.Context, data []byte) error {
-		require.NotNil(t, ctx)
+		assert.NotNil(t, ctx)
 		if len(data) == 0 {
 			return errEmptyData
 		}
 		return nil
 	})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	t.Run("success", func(t *testing.T) {
 		rc := httptest.NewRecorder()
@@ -133,13 +132,13 @@ func TestWebhookHTTPServeMux(t *testing.T) {
 	handler := WebhookHTTPServeMux(mux, "POST /", "secret")
 
 	err := handler(func(ctx context.Context, data []byte) error {
-		require.NotNil(t, ctx)
+		assert.NotNil(t, ctx)
 		if len(data) == 0 {
 			return errEmptyData
 		}
 		return nil
 	})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	t.Run("success", func(t *testing.T) {
 		rc := httptest.NewRecorder()

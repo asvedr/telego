@@ -5,7 +5,7 @@ package telego
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego/internal/json"
 )

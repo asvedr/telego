@@ -7,8 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -19,7 +18,7 @@ func TestNameReader(t *testing.T) {
 	nameReader := NameReader(buf, text2)
 
 	data, err := io.ReadAll(nameReader)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	assert.Equal(t, text1, string(data))
 	assert.Equal(t, text2, nameReader.Name())
@@ -29,7 +28,7 @@ func TestNameBytes(t *testing.T) {
 	nameBytes := NameBytes([]byte(text1), text2)
 
 	data, err := io.ReadAll(nameBytes)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	assert.Equal(t, text1, string(data))
 	assert.Equal(t, text2, nameBytes.Name())
@@ -88,13 +87,15 @@ func TestTypesConstants(t *testing.T) {
 	}
 }
 
+type errorAssertionFunc = func(t assert.T, object any, msg_and_args ...any)
+
 func TestValidateWebAppData(t *testing.T) {
 	tests := []struct {
 		name    string
 		token   string
 		data    string
 		values  url.Values
-		wantErr assert.ErrorAssertionFunc
+		wantErr errorAssertionFunc
 	}{
 		{
 			name:  "success",
@@ -138,9 +139,7 @@ func TestValidateWebAppData(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			values, err := ValidateWebAppData(tt.token, tt.data)
-			if !tt.wantErr(t, err) {
-				return
-			}
+			tt.wantErr(t, err)
 			assert.Equal(t, tt.values, values)
 		})
 	}
@@ -152,7 +151,7 @@ func TestValidateLoginWidgetData(t *testing.T) {
 		token   string
 		data    string
 		values  url.Values
-		wantErr assert.ErrorAssertionFunc
+		wantErr errorAssertionFunc
 	}{
 		{
 			name:  "success",
@@ -196,9 +195,7 @@ func TestValidateLoginWidgetData(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			values, err := ValidateLoginWidgetData(tt.token, tt.data)
-			if !tt.wantErr(t, err) {
-				return
-			}
+			tt.wantErr(t, err)
 			assert.Equal(t, tt.values, values)
 		})
 	}

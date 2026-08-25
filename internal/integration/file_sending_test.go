@@ -13,8 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 	tu "github.com/mymmrac/telego/telegoutil"
@@ -44,7 +43,7 @@ func TestFileSending(t *testing.T) {
 		Caption: "SendDocument " + timeNow,
 	})
 
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.NotNil(t, msg)
 
 	cancel()

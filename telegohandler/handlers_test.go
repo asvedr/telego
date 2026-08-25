@@ -5,8 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -41,16 +40,16 @@ func testHandler(t *testing.T, bh *BotHandler, wg *sync.WaitGroup) {
 func testHandlerSetup(t *testing.T, bh *BotHandler) {
 	t.Helper()
 
-	require.Len(t, bh.baseGroup.routes, 1)
-	require.NotNil(t, bh.baseGroup.routes[0].handler)
-	require.NotNil(t, bh.baseGroup.routes[0].predicates)
-	require.Len(t, bh.baseGroup.routes[0].predicates, 1)
+	assert.Len(t, bh.baseGroup.routes, 1)
+	assert.NotNil(t, bh.baseGroup.routes[0].handler)
+	assert.NotNil(t, bh.baseGroup.routes[0].predicates)
+	assert.Len(t, bh.baseGroup.routes[0].predicates, 1)
 }
 
 func TestBotHandler_HandleMessage(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleMessage(nil) })
+	assert.Panics(t, func() { bh.HandleMessage(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageHandler(func(_ *Context, _ telego.Message) error { wg.Done(); return nil })
@@ -68,7 +67,7 @@ func TestBotHandler_HandleMessage(t *testing.T) {
 func TestBotHandler_HandleEditedMessage(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleEditedMessage(nil) })
+	assert.Panics(t, func() { bh.HandleEditedMessage(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageHandler(func(_ *Context, _ telego.Message) error { wg.Done(); return nil })
@@ -86,7 +85,7 @@ func TestBotHandler_HandleEditedMessage(t *testing.T) {
 func TestBotHandler_HandleChannelPost(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleChannelPost(nil) })
+	assert.Panics(t, func() { bh.HandleChannelPost(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageHandler(func(_ *Context, _ telego.Message) error { wg.Done(); return nil })
@@ -104,7 +103,7 @@ func TestBotHandler_HandleChannelPost(t *testing.T) {
 func TestBotHandler_HandleEditedChannelPost(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleEditedChannelPost(nil) })
+	assert.Panics(t, func() { bh.HandleEditedChannelPost(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageHandler(func(_ *Context, _ telego.Message) error { wg.Done(); return nil })
@@ -122,7 +121,7 @@ func TestBotHandler_HandleEditedChannelPost(t *testing.T) {
 func TestBotHandler_HandleBusinessConnection(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleBusinessConnection(nil) })
+	assert.Panics(t, func() { bh.HandleBusinessConnection(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := BusinessConnectionHandler(func(_ *Context, _ telego.BusinessConnection) error { wg.Done(); return nil })
@@ -140,7 +139,7 @@ func TestBotHandler_HandleBusinessConnection(t *testing.T) {
 func TestBotHandler_HandleBusinessMessage(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleBusinessMessage(nil) })
+	assert.Panics(t, func() { bh.HandleBusinessMessage(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageHandler(func(_ *Context, _ telego.Message) error { wg.Done(); return nil })
@@ -158,7 +157,7 @@ func TestBotHandler_HandleBusinessMessage(t *testing.T) {
 func TestBotHandler_HandleEditedBusinessMessage(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleEditedBusinessMessage(nil) })
+	assert.Panics(t, func() { bh.HandleEditedBusinessMessage(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageHandler(func(_ *Context, _ telego.Message) error { wg.Done(); return nil })
@@ -176,7 +175,7 @@ func TestBotHandler_HandleEditedBusinessMessage(t *testing.T) {
 func TestBotHandler_HandleDeletedBusinessMessages(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleDeletedBusinessMessages(nil) })
+	assert.Panics(t, func() { bh.HandleDeletedBusinessMessages(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := DeletedBusinessMessagesHandler(func(_ *Context, _ telego.BusinessMessagesDeleted) error {
@@ -197,7 +196,7 @@ func TestBotHandler_HandleDeletedBusinessMessages(t *testing.T) {
 func TestBotHandler_HandleGuestMessage(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleGuestMessage(nil) })
+	assert.Panics(t, func() { bh.HandleGuestMessage(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageHandler(func(_ *Context, _ telego.Message) error {
@@ -218,7 +217,7 @@ func TestBotHandler_HandleGuestMessage(t *testing.T) {
 func TestBotHandler_HandleMessageReaction(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleMessageReaction(nil) })
+	assert.Panics(t, func() { bh.HandleMessageReaction(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageReactionHandler(func(_ *Context, _ telego.MessageReactionUpdated) error { wg.Done(); return nil })
@@ -236,7 +235,7 @@ func TestBotHandler_HandleMessageReaction(t *testing.T) {
 func TestBotHandler_HandleMessageReactionCount(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleMessageReactionCount(nil) })
+	assert.Panics(t, func() { bh.HandleMessageReactionCount(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := MessageReactionCountHandler(func(_ *Context, _ telego.MessageReactionCountUpdated) error {
@@ -257,7 +256,7 @@ func TestBotHandler_HandleMessageReactionCount(t *testing.T) {
 func TestBotHandler_HandleInlineQuery(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleInlineQuery(nil) })
+	assert.Panics(t, func() { bh.HandleInlineQuery(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := InlineQueryHandler(func(_ *Context, _ telego.InlineQuery) error { wg.Done(); return nil })
@@ -275,7 +274,7 @@ func TestBotHandler_HandleInlineQuery(t *testing.T) {
 func TestBotHandler_HandleChosenInlineResult(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleChosenInlineResult(nil) })
+	assert.Panics(t, func() { bh.HandleChosenInlineResult(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := ChosenInlineResultHandler(func(_ *Context, _ telego.ChosenInlineResult) error {
@@ -296,7 +295,7 @@ func TestBotHandler_HandleChosenInlineResult(t *testing.T) {
 func TestBotHandler_HandleCallbackQuery(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleCallbackQuery(nil) })
+	assert.Panics(t, func() { bh.HandleCallbackQuery(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := CallbackQueryHandler(func(_ *Context, _ telego.CallbackQuery) error { wg.Done(); return nil })
@@ -314,7 +313,7 @@ func TestBotHandler_HandleCallbackQuery(t *testing.T) {
 func TestBotHandler_HandleShippingQuery(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleShippingQuery(nil) })
+	assert.Panics(t, func() { bh.HandleShippingQuery(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := ShippingQueryHandler(func(_ *Context, _ telego.ShippingQuery) error { wg.Done(); return nil })
@@ -332,7 +331,7 @@ func TestBotHandler_HandleShippingQuery(t *testing.T) {
 func TestBotHandler_HandlePreCheckoutQuery(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandlePreCheckoutQuery(nil) })
+	assert.Panics(t, func() { bh.HandlePreCheckoutQuery(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := PreCheckoutQueryHandler(func(_ *Context, _ telego.PreCheckoutQuery) error {
@@ -353,7 +352,7 @@ func TestBotHandler_HandlePreCheckoutQuery(t *testing.T) {
 func TestBotHandler_HandlePurchasedPaidMedia(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandlePurchasedPaidMedia(nil) })
+	assert.Panics(t, func() { bh.HandlePurchasedPaidMedia(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := PurchasedPaidMediaHandler(func(_ *Context, _ telego.PaidMediaPurchased) error {
@@ -374,7 +373,7 @@ func TestBotHandler_HandlePurchasedPaidMedia(t *testing.T) {
 func TestBotHandler_HandlePoll(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandlePoll(nil) })
+	assert.Panics(t, func() { bh.HandlePoll(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := PollHandler(func(_ *Context, _ telego.Poll) error { wg.Done(); return nil })
@@ -392,7 +391,7 @@ func TestBotHandler_HandlePoll(t *testing.T) {
 func TestBotHandler_HandlePollAnswer(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandlePollAnswer(nil) })
+	assert.Panics(t, func() { bh.HandlePollAnswer(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := PollAnswerHandler(func(_ *Context, _ telego.PollAnswer) error { wg.Done(); return nil })
@@ -410,9 +409,9 @@ func TestBotHandler_HandlePollAnswer(t *testing.T) {
 func TestBotHandler_HandleMyChatMemberUpdated(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleMyChatMember(nil) })
-	require.Panics(t, func() { bh.HandleMyChatMemberUpdated(nil) })
-	require.Panics(t, func() { bh.BaseGroup().HandleMyChatMemberUpdated(nil) }) //nolint:govet
+	assert.Panics(t, func() { bh.HandleMyChatMember(nil) })
+	assert.Panics(t, func() { bh.HandleMyChatMemberUpdated(nil) })
+	assert.Panics(t, func() { bh.BaseGroup().HandleMyChatMemberUpdated(nil) }) //nolint:govet
 
 	wg := &sync.WaitGroup{}
 	handler := ChatMemberHandler(func(_ *Context, _ telego.ChatMemberUpdated) error {
@@ -436,9 +435,9 @@ func TestBotHandler_HandleMyChatMemberUpdated(t *testing.T) {
 func TestBotHandler_HandleChatMemberUpdated(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleChatMember(nil) })
-	require.Panics(t, func() { bh.HandleChatMemberUpdated(nil) })
-	require.Panics(t, func() { bh.BaseGroup().HandleChatMemberUpdated(nil) }) //nolint:govet
+	assert.Panics(t, func() { bh.HandleChatMember(nil) })
+	assert.Panics(t, func() { bh.HandleChatMemberUpdated(nil) })
+	assert.Panics(t, func() { bh.BaseGroup().HandleChatMemberUpdated(nil) }) //nolint:govet
 
 	wg := &sync.WaitGroup{}
 	handler := ChatMemberHandler(func(_ *Context, _ telego.ChatMemberUpdated) error {
@@ -462,7 +461,7 @@ func TestBotHandler_HandleChatMemberUpdated(t *testing.T) {
 func TestBotHandler_HandleChatJoinRequest(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleChatJoinRequest(nil) })
+	assert.Panics(t, func() { bh.HandleChatJoinRequest(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := ChatJoinRequestHandler(func(_ *Context, _ telego.ChatJoinRequest) error { wg.Done(); return nil })
@@ -480,7 +479,7 @@ func TestBotHandler_HandleChatJoinRequest(t *testing.T) {
 func TestBotHandler_HandleChatBoost(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleChatBoost(nil) })
+	assert.Panics(t, func() { bh.HandleChatBoost(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := ChatBoostHandler(func(_ *Context, _ telego.ChatBoostUpdated) error { wg.Done(); return nil })
@@ -504,7 +503,7 @@ func TestBotHandler_HandleChatBoost(t *testing.T) {
 func TestBotHandler_HandleRemovedChatBoost(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleRemovedChatBoost(nil) })
+	assert.Panics(t, func() { bh.HandleRemovedChatBoost(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := RemovedChatBoostHandler(func(_ *Context, _ telego.ChatBoostRemoved) error { wg.Done(); return nil })
@@ -526,7 +525,7 @@ func TestBotHandler_HandleRemovedChatBoost(t *testing.T) {
 func TestBotHandler_HandleManagedBot(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleManagedBot(nil) })
+	assert.Panics(t, func() { bh.HandleManagedBot(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := ManagedBotHandler(func(_ *Context, _ telego.ManagedBotUpdated) error { wg.Done(); return nil })
@@ -544,7 +543,7 @@ func TestBotHandler_HandleManagedBot(t *testing.T) {
 func TestBotHandler_HandleSubscription(t *testing.T) {
 	bh := newTestBotHandler(t)
 
-	require.Panics(t, func() { bh.HandleSubscription(nil) })
+	assert.Panics(t, func() { bh.HandleSubscription(nil) })
 
 	wg := &sync.WaitGroup{}
 	handler := SubscriptionHandler(func(_ *Context, _ telego.BotSubscriptionUpdated) error { wg.Done(); return nil })

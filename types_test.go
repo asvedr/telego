@@ -4,8 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego/internal/json"
 	ta "github.com/mymmrac/telego/telegoapi"
@@ -641,11 +640,11 @@ func Test_chatMemberData_UnmarshalJSON(t *testing.T) {
 			c := &chatMemberData{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				assert.Nil(t, c.Data)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c.Data)
 		})
 	}
@@ -689,18 +688,18 @@ func TestChatMemberUpdated_UnmarshalJSON(t *testing.T) {
 			InviteLink:    nil,
 		}
 		jsonData, err := json.Marshal(expectedCMU)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		cmu := &ChatMemberUpdated{}
 		err = cmu.UnmarshalJSON(jsonData)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, expectedCMU, cmu)
 	})
 
 	t.Run("error", func(t *testing.T) {
 		cmu := &ChatMemberUpdated{}
 		err := cmu.UnmarshalJSON([]byte("test"))
-		require.Error(t, err)
+		assert.Error(t, err)
 	})
 }
 
@@ -753,11 +752,11 @@ func Test_menuButtonData_UnmarshalJSON(t *testing.T) {
 			m := &menuButtonData{}
 			err := m.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				assert.Nil(t, m.Data)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, m.Data)
 		})
 	}
@@ -804,11 +803,11 @@ func TestChatID_MarshalJSON(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			data, err := tt.chatID.MarshalJSON()
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				assert.Nil(t, data)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.jsonData, string(data))
 		})
 	}
@@ -849,11 +848,11 @@ func TestChatID_UnmarshalJSON(t *testing.T) {
 			var chatID ChatID
 			err := chatID.UnmarshalJSON([]byte(tt.jsonData))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				assert.Nil(t, data)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.chatID, chatID)
 		})
 	}
@@ -910,11 +909,11 @@ func TestInputFile_MarshalJSON(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			data, err := tt.inputFile.MarshalJSON()
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				assert.Nil(t, data)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.jsonData, string(data))
 		})
 	}
@@ -1275,13 +1274,13 @@ func TestUpdate_CloneSafe(t *testing.T) {
 		}
 
 		uc, err := u.CloneSafe()
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, u, uc)
 	})
 
 	t.Run("error_unmarshal", func(t *testing.T) {
 		uc, err := (Update{ChatMember: &ChatMemberUpdated{}}).CloneSafe()
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Zero(t, uc)
 	})
 
@@ -1292,7 +1291,7 @@ func TestUpdate_CloneSafe(t *testing.T) {
 			},
 		}
 		uc, err := u.CloneSafe()
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Zero(t, uc)
 	})
 }
@@ -1440,10 +1439,10 @@ func Test_ChatFullInfo_UnmarshalJSON(t *testing.T) {
 			c := &ChatFullInfo{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c)
 		})
 	}
@@ -1491,10 +1490,10 @@ func Test_ExternalReplyInfo_UnmarshalJSON(t *testing.T) {
 			e := &ExternalReplyInfo{}
 			err := e.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, e)
 		})
 	}
@@ -1533,10 +1532,10 @@ func Test_CallbackQuery_UnmarshalJSON(t *testing.T) {
 			c := &CallbackQuery{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c)
 		})
 	}
@@ -1584,10 +1583,10 @@ func Test_ReactionCount_UnmarshalJSON(t *testing.T) {
 			c := &ReactionCount{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c)
 		})
 	}
@@ -1645,10 +1644,10 @@ func Test_MessageReactionUpdated_UnmarshalJSON(t *testing.T) {
 			m := &MessageReactionUpdated{}
 			err := m.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, m)
 		})
 	}
@@ -1696,10 +1695,10 @@ func Test_ChatBoost_UnmarshalJSON(t *testing.T) {
 			c := &ChatBoost{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c)
 		})
 	}
@@ -1747,10 +1746,10 @@ func Test_ChatBoostRemoved_UnmarshalJSON(t *testing.T) {
 			c := &ChatBoostRemoved{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c)
 		})
 	}
@@ -1798,10 +1797,10 @@ func Test_BackgroundTypeFill_UnmarshalJSON(t *testing.T) {
 			c := &BackgroundTypeFill{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c)
 		})
 	}
@@ -1848,10 +1847,10 @@ func Test_ChatBackground_UnmarshalJSON(t *testing.T) {
 			c := &ChatBackground{}
 			err := c.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, c)
 		})
 	}
@@ -1931,14 +1930,14 @@ func Test_RichTextBold_UnmarshalJSON(t *testing.T) {
 			p := &RichTextBold{}
 			err := p.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
 
 			formated, _ := json.Marshal(p) //nolint:errcheck
 			t.Log(string(formated))
 
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data, p)
 		})
 	}
@@ -3352,14 +3351,14 @@ func Test_Message_UnmarshalJSON(t *testing.T) {
 			m := &Message{}
 			err := m.UnmarshalJSON([]byte(tt.json))
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
 
 			formated, _ := json.Marshal(m) //nolint:errcheck
 			t.Log(string(formated))
 
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.data.RichMessage, m.RichMessage)
 		})
 	}

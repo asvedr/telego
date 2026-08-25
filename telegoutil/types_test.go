@@ -5,8 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -68,19 +67,19 @@ func TestDownloadFile(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		data, err := DownloadFile(srv.URL + "/")
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, expectedData, data)
 	})
 
 	t.Run("error_request", func(t *testing.T) {
 		data, err := DownloadFile("")
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, data)
 	})
 
 	t.Run("error_status", func(t *testing.T) {
 		data, err := DownloadFile(srv.URL + "/error")
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, data)
 	})
 }
@@ -188,7 +187,7 @@ func TestInlineKeyboardGrid(t *testing.T) {
 		{{}},
 		{{}, {}, {}},
 	})
-	require.Len(t, i.InlineKeyboard, 2)
+	assert.Len(t, i.InlineKeyboard, 2)
 	assert.Len(t, i.InlineKeyboard[0], 1)
 	assert.Len(t, i.InlineKeyboard[1], 3)
 }
@@ -197,7 +196,7 @@ func TestInlineKeyboardCols(t *testing.T) {
 	t.Run("full", func(t *testing.T) {
 		b := telego.InlineKeyboardButton{}
 		i := InlineKeyboardCols(2, b, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 2)
 	})
@@ -205,7 +204,7 @@ func TestInlineKeyboardCols(t *testing.T) {
 	t.Run("one_off", func(t *testing.T) {
 		b := telego.InlineKeyboardButton{}
 		i := InlineKeyboardCols(2, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 1)
 	})
@@ -220,7 +219,7 @@ func TestInlineKeyboardRows(t *testing.T) {
 	t.Run("full", func(t *testing.T) {
 		b := telego.InlineKeyboardButton{}
 		i := InlineKeyboardRows(2, b, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 2)
 	})
@@ -228,7 +227,7 @@ func TestInlineKeyboardRows(t *testing.T) {
 	t.Run("one_off", func(t *testing.T) {
 		b := telego.InlineKeyboardButton{}
 		i := InlineKeyboardRows(2, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 1)
 	})
@@ -259,7 +258,7 @@ func TestKeyboardGrid(t *testing.T) {
 		{{}},
 		{{}, {}, {}},
 	})
-	require.Len(t, i.Keyboard, 2)
+	assert.Len(t, i.Keyboard, 2)
 	assert.Len(t, i.Keyboard[0], 1)
 	assert.Len(t, i.Keyboard[1], 3)
 }
@@ -268,7 +267,7 @@ func TestKeyboardCols(t *testing.T) {
 	t.Run("full", func(t *testing.T) {
 		b := telego.KeyboardButton{}
 		i := KeyboardCols(2, b, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 2)
 	})
@@ -276,7 +275,7 @@ func TestKeyboardCols(t *testing.T) {
 	t.Run("one_off", func(t *testing.T) {
 		b := telego.KeyboardButton{}
 		i := KeyboardCols(2, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 1)
 	})
@@ -291,7 +290,7 @@ func TestKeyboardRows(t *testing.T) {
 	t.Run("full", func(t *testing.T) {
 		b := telego.KeyboardButton{}
 		i := KeyboardRows(2, b, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 2)
 	})
@@ -299,7 +298,7 @@ func TestKeyboardRows(t *testing.T) {
 	t.Run("one_off", func(t *testing.T) {
 		b := telego.KeyboardButton{}
 		i := KeyboardRows(2, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 1)
 	})
@@ -738,7 +737,7 @@ func TestRichBlockTableGrid(t *testing.T) {
 		{{}},
 		{{}, {}, {}},
 	})
-	require.Len(t, i.Cells, 2)
+	assert.Len(t, i.Cells, 2)
 	assert.Len(t, i.Cells[0], 1)
 	assert.Len(t, i.Cells[1], 3)
 }
@@ -747,7 +746,7 @@ func TestRichBlockTableCols(t *testing.T) {
 	t.Run("full", func(t *testing.T) {
 		b := telego.RichBlockTableCell{}
 		i := RichBlockTableCols(2, b, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 2)
 	})
@@ -755,7 +754,7 @@ func TestRichBlockTableCols(t *testing.T) {
 	t.Run("one_off", func(t *testing.T) {
 		b := telego.RichBlockTableCell{}
 		i := RichBlockTableCols(2, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 1)
 	})
@@ -770,7 +769,7 @@ func TestRichBlockTableRows(t *testing.T) {
 	t.Run("full", func(t *testing.T) {
 		b := telego.RichBlockTableCell{}
 		i := RichBlockTableRows(2, b, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 2)
 	})
@@ -778,7 +777,7 @@ func TestRichBlockTableRows(t *testing.T) {
 	t.Run("one_off", func(t *testing.T) {
 		b := telego.RichBlockTableCell{}
 		i := RichBlockTableRows(2, b, b, b)
-		require.Len(t, i, 2)
+		assert.Len(t, i, 2)
 		assert.Len(t, i[0], 2)
 		assert.Len(t, i[1], 1)
 	})

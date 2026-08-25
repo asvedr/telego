@@ -5,8 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -31,7 +30,7 @@ func TestHandlerGroup_Handle(t *testing.T) {
 	t.Run("without_predicates", func(t *testing.T) {
 		gr.Handle(handler)
 
-		require.Len(t, gr.routes, 1)
+		assert.Len(t, gr.routes, 1)
 		assert.NotNil(t, gr.routes[0].handler)
 		assert.Nil(t, gr.routes[0].predicates)
 
@@ -43,7 +42,7 @@ func TestHandlerGroup_Handle(t *testing.T) {
 	t.Run("with_predicates", func(t *testing.T) {
 		gr.Handle(handler, predicate)
 
-		require.Len(t, gr.routes, 1)
+		assert.Len(t, gr.routes, 1)
 		assert.NotNil(t, gr.routes[0].handler)
 		assert.NotNil(t, gr.routes[0].predicates)
 
@@ -63,7 +62,7 @@ func TestHandlerGroup_Group(t *testing.T) {
 	t.Run("without_predicates", func(t *testing.T) {
 		newGr := gr.Group()
 
-		require.Len(t, gr.routes, 1)
+		assert.Len(t, gr.routes, 1)
 		assert.Equal(t, newGr, gr.routes[0].group)
 
 		gr.routes = nil
@@ -74,7 +73,7 @@ func TestHandlerGroup_Group(t *testing.T) {
 	t.Run("with_predicates", func(t *testing.T) {
 		newGr := gr.Group(predicate)
 
-		require.Len(t, gr.routes, 1)
+		assert.Len(t, gr.routes, 1)
 		assert.Equal(t, newGr, gr.routes[0].group)
 		assert.NotEmpty(t, gr.routes[0].predicates)
 
@@ -98,7 +97,7 @@ func TestHandlerGroup_Use(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		gr.Use(middleware)
 
-		require.Len(t, gr.routes, 1)
+		assert.Len(t, gr.routes, 1)
 		assert.NotNil(t, gr.routes[0].handler)
 	})
 }
@@ -166,22 +165,22 @@ func TestHandlerGroup_HandleUpdate(t *testing.T) {
 	})
 
 	err := gr.HandleUpdate(t.Context(), nil, telego.Update{})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, 0, m)
 	assert.Equal(t, 0, c)
 
 	err = gr.HandleUpdate(t.Context(), nil, telego.Update{Message: &telego.Message{}})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, 1, m)
 	assert.Equal(t, 0, c)
 
 	err = gr.HandleUpdate(t.Context(), nil, telego.Update{ChannelPost: &telego.Message{}})
-	require.ErrorIs(t, err, errTest)
+	assert.ErrorIs(t, err, errTest)
 	assert.Equal(t, 1, m)
 	assert.Equal(t, 0, c)
 
 	err = gr.HandleUpdate(t.Context(), nil, telego.Update{CallbackQuery: &telego.CallbackQuery{}})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, 1, m)
 	assert.Equal(t, 1, c)
 }

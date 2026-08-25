@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"gitlab.com/asvedr/testify/assert"
 )
 
 const (

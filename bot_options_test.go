@@ -6,10 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/valyala/fasthttp"
-	"go.uber.org/mock/gomock"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego/internal/json"
 	ta "github.com/mymmrac/telego/telegoapi"
@@ -27,7 +25,7 @@ func TestWithAPICaller(t *testing.T) {
 	caller := testCallerType{}
 
 	err := WithAPICaller(caller)(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.EqualValues(t, caller, bot.api)
 }
 
@@ -36,7 +34,7 @@ func TestWithFastHTTPClient(t *testing.T) {
 	client := &fasthttp.Client{}
 
 	err := WithFastHTTPClient(client)(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 }
 
 func TestWithHTTPClient(t *testing.T) {
@@ -44,7 +42,7 @@ func TestWithHTTPClient(t *testing.T) {
 	client := &http.Client{}
 
 	err := WithHTTPClient(client)(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 }
 
 type testConstructorType struct{}
@@ -64,7 +62,7 @@ func TestWithRequestConstructor(t *testing.T) {
 	constructor := &testConstructorType{}
 
 	err := WithRequestConstructor(constructor)(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.EqualValues(t, constructor, bot.constructor)
 }
 
@@ -72,10 +70,10 @@ func TestWithDefaultLogger(t *testing.T) {
 	bot := &Bot{}
 
 	err := WithDefaultLogger(true, false)(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	log, ok := bot.log.(*logger)
-	require.True(t, ok)
+	assert.True(t, ok)
 
 	assert.True(t, log.DebugMode)
 	assert.False(t, log.PrintErrors)
@@ -87,10 +85,10 @@ func TestWithExtendedDefaultLogger(t *testing.T) {
 
 	t.Run("nil_replacer", func(t *testing.T) {
 		err := WithExtendedDefaultLogger(true, true, nil)(bot)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		log, ok := bot.log.(*logger)
-		require.True(t, ok)
+		assert.True(t, ok)
 
 		assert.True(t, log.DebugMode)
 		assert.True(t, log.PrintErrors)
@@ -99,10 +97,10 @@ func TestWithExtendedDefaultLogger(t *testing.T) {
 
 	t.Run("not_nil_replacer", func(t *testing.T) {
 		err := WithExtendedDefaultLogger(true, true, strings.NewReplacer("old", "new"))(bot)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		log, ok := bot.log.(*logger)
-		require.True(t, ok)
+		assert.True(t, ok)
 
 		assert.True(t, log.DebugMode)
 		assert.True(t, log.PrintErrors)
@@ -114,10 +112,10 @@ func TestWithDiscardLogger(t *testing.T) {
 	bot := &Bot{}
 
 	err := WithDiscardLogger()(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	log, ok := bot.log.(*logger)
-	require.True(t, ok)
+	assert.True(t, ok)
 
 	assert.False(t, log.DebugMode)
 	assert.False(t, log.PrintErrors)
@@ -139,7 +137,7 @@ func TestWithLogger(t *testing.T) {
 	log := &testLoggerType{}
 
 	err := WithLogger(log)(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.EqualValues(t, log, bot.log)
 }
 
@@ -148,13 +146,13 @@ func TestWithAPIServer(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		err := WithAPIServer("test")(bot)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, "test", bot.apiURL)
 	})
 
 	t.Run("error", func(t *testing.T) {
 		err := WithAPIServer("")(bot)
-		require.Error(t, err)
+		assert.Error(t, err)
 	})
 }
 
@@ -162,10 +160,10 @@ func TestWithDefaultDebugLogger(t *testing.T) {
 	bot := &Bot{}
 
 	err := WithDefaultDebugLogger()(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	log, ok := bot.log.(*logger)
-	require.True(t, ok)
+	assert.True(t, ok)
 
 	assert.True(t, log.DebugMode)
 	assert.True(t, log.PrintErrors)
@@ -176,7 +174,7 @@ func TestWithDebugMode(t *testing.T) {
 	bot := &Bot{}
 
 	err := WithDebugMode()(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	assert.True(t, bot.debugMode)
 }
@@ -185,16 +183,14 @@ func TestWithTestServerPath(t *testing.T) {
 	bot := &Bot{}
 
 	err := WithTestServerPath()(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	assert.True(t, bot.useTestServerPath)
 }
 
 func TestWithHealthCheck(t *testing.T) {
-	ctrl := gomock.NewController(t)
-
-	caller := mockapi.NewMockCaller(ctrl)
-	constructor := mockapi.NewMockRequestConstructor(ctrl)
+	caller := mockapi.NewMockCaller()
+	constructor := mockapi.NewMockRequestConstructor()
 
 	expectedResp := &ta.Response{
 		Ok:     true,
@@ -206,13 +202,11 @@ func TestWithHealthCheck(t *testing.T) {
 		BodyRaw:     []byte{},
 	}
 
-	constructor.EXPECT().
-		JSONRequest(nil).
+	constructor.On("JSONRequest", nil).
 		Return(expectedData, nil).
 		Times(1)
 
-	caller.EXPECT().
-		Call(t.Context(), defaultBotAPIServer+botPathPrefix+validToken+"/getMe", expectedData).
+	caller.On("Call", t.Context(), defaultBotAPIServer+botPathPrefix+validToken+"/getMe", expectedData).
 		Return(expectedResp, nil).
 		Times(1)
 
@@ -221,15 +215,15 @@ func TestWithHealthCheck(t *testing.T) {
 		WithRequestConstructor(constructor),
 		WithHealthCheck(t.Context()),
 	)
-	require.NoError(t, err)
-	require.NotNil(t, bot)
+	assert.NoError(t, err)
+	assert.NotNil(t, bot)
 }
 
 func TestWithWarnings(t *testing.T) {
 	bot := &Bot{}
 
 	err := WithWarnings()(bot)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	assert.True(t, bot.reportWarningAsErrors)
 }

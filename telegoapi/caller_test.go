@@ -9,10 +9,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/fasthttputil"
+	"gitlab.com/asvedr/testify/assert"
 )
 
 const (
@@ -39,7 +38,7 @@ func TestFastHTTPCaller_Call(t *testing.T) {
 	}()
 
 	teardown := func() {
-		require.NoError(t, ln.Close())
+		assert.NoError(t, ln.Close())
 	}
 
 	client := &fasthttp.Client{
@@ -61,25 +60,25 @@ func TestFastHTTPCaller_Call(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		resp, err := caller.Call(ctx, "http://localhost", data)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.True(t, resp.Ok)
 	})
 
 	t.Run("error_fasthttp_do_request", func(t *testing.T) {
 		resp, err := caller.Call(ctx, "abc", data)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
 	t.Run("error_500", func(t *testing.T) {
 		resp, err := caller.Call(ctx, "http://localhost/500", data)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
 	t.Run("error_json", func(t *testing.T) {
 		resp, err := caller.Call(ctx, "http://localhost/json_err", data)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 }
@@ -90,7 +89,7 @@ type fasthttpServer struct {
 
 func (s *fasthttpServer) Handle(ctx *fasthttp.RequestCtx) {
 	assert.True(s.t, ctx.IsPost())
-	assert.Equal(s.t, ContentTypeJSON, string(ctx.Request.Header.ContentType())) //nolint:testifylint
+	assert.Equal(s.t, ContentTypeJSON, string(ctx.Request.Header.ContentType()))
 
 	switch string(ctx.Path()) {
 	case err500Path:
@@ -98,11 +97,11 @@ func (s *fasthttpServer) Handle(ctx *fasthttp.RequestCtx) {
 	case errJSONPath:
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		_, err := ctx.WriteString("abc")
-		require.NoError(s.t, err)
+		assert.NoError(s.t, err)
 	default:
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		_, err := ctx.WriteString("{\"ok\": true}")
-		require.NoError(s.t, err)
+		assert.NoError(s.t, err)
 	}
 }
 
@@ -127,31 +126,31 @@ func TestHTTPCaller_Call(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		resp, err := caller.Call(ctx, srv.URL, data)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.True(t, resp.Ok)
 	})
 
 	t.Run("error_http_create_request", func(t *testing.T) {
 		resp, err := caller.Call(ctx, "\x00", data)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
 	t.Run("error_http_do_request", func(t *testing.T) {
 		resp, err := caller.Call(ctx, "abc", data)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
 	t.Run("error_500", func(t *testing.T) {
 		resp, err := caller.Call(ctx, srv.URL+err500Path, data)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
 	t.Run("error_json", func(t *testing.T) {
 		resp, err := caller.Call(ctx, srv.URL+errJSONPath, data)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 }
@@ -162,7 +161,7 @@ type httpServer struct {
 
 func (h *httpServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	assert.Equal(h.t, http.MethodPost, req.Method)
-	assert.Equal(h.t, ContentTypeJSON, req.Header.Get(ContentTypeHeader)) //nolint:testifylint
+	assert.Equal(h.t, ContentTypeJSON, req.Header.Get(ContentTypeHeader))
 
 	switch req.RequestURI {
 	case err500Path:
@@ -206,7 +205,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			MaxAttempts: 1,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, expectedResp, resp)
 	})
 
@@ -222,7 +221,7 @@ func TestRetryCaller_Call(t *testing.T) {
 		resp, err := retryCaller.Call(ctx, "", &RequestData{
 			BodyStream: bytes.NewReader([]byte("abc")),
 		})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, expectedResp, resp)
 	})
 
@@ -236,7 +235,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			MaxAttempts: 3,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, expectedResp, resp)
 	})
 
@@ -249,7 +248,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			MaxAttempts: 2,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
@@ -265,7 +264,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			MaxDelay:     1,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
@@ -282,7 +281,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			RateLimit:   RetryRateLimitSkip,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
@@ -299,7 +298,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			RateLimit:   RetryRateLimitWait,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
@@ -316,7 +315,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			RateLimit:   RetryRateLimitAbort,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
@@ -333,7 +332,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			RateLimit:   RetryRateLimitWaitOrAbort,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
@@ -348,7 +347,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			MaxAttempts: 2,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 
@@ -363,7 +362,7 @@ func TestRetryCaller_Call(t *testing.T) {
 			MaxAttempts: 2,
 		}
 		resp, err := retryCaller.Call(ctx, "", &RequestData{})
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, resp)
 	})
 }

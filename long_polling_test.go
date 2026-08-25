@@ -4,35 +4,30 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"go.uber.org/mock/gomock"
+	"gitlab.com/asvedr/testify/assert"
+	"gitlab.com/asvedr/testify/mock"
 )
 
 const timeout = time.Second
 
 func TestBot_UpdatesViaLongPolling(t *testing.T) {
-	ctrl := gomock.NewController(t)
-
 	t.Run("success", func(t *testing.T) {
-		m := newMockedBot(ctrl)
+		m := newMockedBot()
 
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(data, nil).MinTimes(1)
+		m.MockRequestConstructor.On("JSONRequest", mock.Anything).
+			Return(data, nil)
 
 		expectedUpdates := []Update{
 			{UpdateID: 1},
 			{UpdateID: 2},
 		}
 		resp := telegoResponse(t, expectedUpdates)
-		m.MockAPICaller.EXPECT().
-			Call(gomock.Any(), gomock.Any(), gomock.Any()).
-			Return(resp, nil).MinTimes(1)
+		m.MockAPICaller.On("Call", mock.Anything, mock.Anything, mock.Anything).
+			Return(resp, nil)
 
 		assert.NotPanics(t, func() {
 			updates, err := m.Bot.UpdatesViaLongPolling(t.Context(), nil)
-			require.NoError(t, err)
+			assert.NoError(t, err)
 
 			time.Sleep(time.Millisecond * 10)
 			select {
@@ -45,41 +40,39 @@ func TestBot_UpdatesViaLongPolling(t *testing.T) {
 	})
 
 	t.Run("error_get_update", func(t *testing.T) {
-		m := newMockedBot(ctrl)
+		m := newMockedBot()
 
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(nil, errTest).MinTimes(1)
+		m.MockRequestConstructor.On("JSONRequest", mock.Anything).
+			Return(nil, errTest)
 
 		assert.NotPanics(t, func() {
 			_, err := m.Bot.UpdatesViaLongPolling(t.Context(), nil)
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			time.Sleep(time.Millisecond * 10)
 		})
 	})
 
 	t.Run("error_already_running", func(t *testing.T) {
-		m := newMockedBot(ctrl)
+		m := newMockedBot()
 
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(nil, errTest).AnyTimes()
+		m.MockRequestConstructor.On("JSONRequest", mock.Anything).
+			Return(nil, errTest).Maybe()
 
 		assert.NotPanics(t, func() {
 			_, err := m.Bot.UpdatesViaLongPolling(t.Context(), nil)
-			require.NoError(t, err)
+			assert.NoError(t, err)
 
 			_, err = m.Bot.UpdatesViaLongPolling(t.Context(), nil)
-			require.Error(t, err)
+			assert.Error(t, err)
 		})
 	})
 
 	t.Run("error_options", func(t *testing.T) {
-		m := newMockedBot(ctrl)
+		m := newMockedBot()
 
 		assert.NotPanics(t, func() {
 			_, err := m.Bot.UpdatesViaLongPolling(t.Context(), nil, WithLongPollingUpdateInterval(-time.Second))
-			require.Error(t, err)
+			assert.Error(t, err)
 		})
 	})
 }
@@ -90,13 +83,13 @@ func TestWithLongPollingUpdateInterval(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		err := WithLongPollingUpdateInterval(interval)(ctx)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, interval, ctx.updateInterval)
 	})
 
 	t.Run("error", func(t *testing.T) {
 		err := WithLongPollingUpdateInterval(-interval)(ctx)
-		require.Error(t, err)
+		assert.Error(t, err)
 	})
 }
 
@@ -105,13 +98,13 @@ func TestWithLongPollingRetryTimeout(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		err := WithLongPollingRetryTimeout(timeout)(ctx)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, timeout, ctx.retryTimeout)
 	})
 
 	t.Run("error", func(t *testing.T) {
 		err := WithLongPollingRetryTimeout(-timeout)(ctx)
-		require.Error(t, err)
+		assert.Error(t, err)
 	})
 }
 
@@ -120,6 +113,6 @@ func TestWithLongPollingBuffer(t *testing.T) {
 	buffer := uint(1)
 
 	err := WithLongPollingBuffer(buffer)(ctx)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, buffer, ctx.updateChanBuffer)
 }

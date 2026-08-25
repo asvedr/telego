@@ -8,8 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -28,18 +27,18 @@ func newTestBotHandler(t *testing.T) *BotHandler {
 	t.Helper()
 
 	bot, err := telego.NewBot(token)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	updates := make(chan telego.Update)
 
 	bh, err := NewBotHandler(bot, updates)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	return bh
 }
 
 func TestNewBotHandler(t *testing.T) {
 	bot, err := telego.NewBot(token)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	updates := make(chan telego.Update)
 
@@ -47,7 +46,7 @@ func TestNewBotHandler(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		bh, err = NewBotHandler(bot, updates)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		assert.Equal(t, bot, bh.bot)
 		assert.EqualValues(t, updates, bh.updates)
@@ -57,7 +56,7 @@ func TestNewBotHandler(t *testing.T) {
 
 	t.Run("success_with_options", func(t *testing.T) {
 		bh, err = NewBotHandler(bot, updates, func(_ *BotHandler) error { return nil })
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		assert.Equal(t, bot, bh.bot)
 		assert.EqualValues(t, updates, bh.updates)
@@ -68,19 +67,19 @@ func TestNewBotHandler(t *testing.T) {
 	t.Run("error_with_options", func(t *testing.T) {
 		bh, err = NewBotHandler(bot, updates, func(_ *BotHandler) error { return errTest })
 
-		require.ErrorIs(t, err, errTest)
+		assert.ErrorIs(t, err, errTest)
 		assert.Nil(t, bh)
 	})
 }
 
 func TestBotHandler_Start(t *testing.T) {
 	bot, err := telego.NewBot(token)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	updates := make(chan telego.Update)
 
 	bh, err := NewBotHandler(bot, updates)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	wg := sync.WaitGroup{}
 	h1 := 0
@@ -140,7 +139,7 @@ func TestBotHandler_Start(t *testing.T) {
 
 func TestBotHandler_HandleError(t *testing.T) {
 	bot, err := telego.NewBot(token)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	updates := make(chan telego.Update)
 
@@ -151,7 +150,7 @@ func TestBotHandler_HandleError(t *testing.T) {
 		defer wg.Done()
 		receivedError = err
 	}))
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	bh.Handle(func(_ *Context, _ telego.Update) error {
 		return errTest
@@ -201,12 +200,12 @@ func TestBotHandler_Stop(t *testing.T) {
 
 	t.Run("with_timeout", func(t *testing.T) {
 		bot, err := telego.NewBot(token)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		updates := make(chan telego.Update)
 
 		bh, err := NewBotHandler(bot, updates)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		bh.Handle(func(_ *Context, _ telego.Update) error {
 			time.Sleep(hugeTimeout)
@@ -247,12 +246,12 @@ func TestBotHandler_Stop(t *testing.T) {
 
 	t.Run("without_timeout", func(t *testing.T) {
 		bot, err := telego.NewBot(token)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		updates := make(chan telego.Update, 2)
 
 		bh, err := NewBotHandler(bot, updates)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		called1 := atomic.Int32{}
 		bh.Handle(
@@ -308,7 +307,7 @@ func TestBotHandler_Stop(t *testing.T) {
 
 	t.Run("with_unhandled_updates_error", func(t *testing.T) {
 		bot, err := telego.NewBot(token)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		updates := make(chan telego.Update, 1000)
 		for range cap(updates) - 1 {
@@ -316,7 +315,7 @@ func TestBotHandler_Stop(t *testing.T) {
 		}
 
 		bh, err := NewBotHandler(bot, updates)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		done := make(chan struct{})
 		assert.NotPanics(t, func() {
@@ -346,12 +345,12 @@ func TestBotHandler_Stop(t *testing.T) {
 
 	t.Run("with_canceled", func(t *testing.T) {
 		bot, err := telego.NewBot(token)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		updates := make(chan telego.Update)
 
 		bh, err := NewBotHandler(bot, updates)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		bh.Handle(func(_ *Context, _ telego.Update) error {
 			time.Sleep(hugeTimeout)
@@ -391,12 +390,12 @@ func TestBotHandler_Stop(t *testing.T) {
 
 	t.Run("stop_checked", func(t *testing.T) {
 		bot, err := telego.NewBot(token)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		updates := make(chan telego.Update, 1)
 
 		bh, err := NewBotHandler(bot, updates)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		bh.Handle(func(_ *Context, _ telego.Update) error {
 			t.Fatal("handled after stop")
@@ -421,12 +420,12 @@ func TestBotHandler_Stop(t *testing.T) {
 
 	t.Run("updates_close", func(t *testing.T) {
 		bot, err := telego.NewBot(token)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		updates := make(chan telego.Update, 1)
 
 		bh, err := NewBotHandler(bot, updates)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		bh.Handle(func(_ *Context, _ telego.Update) error {
 			t.Fatal("handled after stop")
@@ -457,7 +456,7 @@ func TestBotHandler_Handle(t *testing.T) {
 
 	bh.Handle(handler, predicate)
 
-	require.Len(t, bh.baseGroup.routes, 1)
+	assert.Len(t, bh.baseGroup.routes, 1)
 	assert.NotNil(t, bh.baseGroup.routes[0].handler)
 	assert.NotEmpty(t, bh.baseGroup.routes[0].predicates)
 }
@@ -469,7 +468,7 @@ func TestBotHandler_Group(t *testing.T) {
 
 	newGr := bh.Group(predicate)
 
-	require.Len(t, bh.baseGroup.routes, 1)
+	assert.Len(t, bh.baseGroup.routes, 1)
 	assert.Equal(t, newGr, bh.baseGroup.routes[0].group)
 	assert.NotEmpty(t, bh.baseGroup.routes[0].predicates)
 }
@@ -483,7 +482,7 @@ func TestBotHandler_Use(t *testing.T) {
 
 	bh.Use(middleware)
 
-	require.Len(t, bh.baseGroup.routes, 1)
+	assert.Len(t, bh.baseGroup.routes, 1)
 	assert.NotNil(t, bh.baseGroup.routes[0].handler)
 }
 
@@ -503,7 +502,7 @@ func TestBotHandler_IsRunning(t *testing.T) {
 		assert.True(t, bh.IsRunning())
 
 		err := bh.Stop()
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.False(t, bh.IsRunning())
 	})
 }

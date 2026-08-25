@@ -1,5 +1,3 @@
-//go:generate mockgen -typed -package mock -destination=mock/caller.go github.com/mymmrac/telego/telegoapi Caller
-
 package telegoapi
 
 import (

@@ -5,8 +5,7 @@ package main
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 	tu "github.com/mymmrac/telego/telegoutil"
@@ -21,7 +20,7 @@ func TestSendMessage(t *testing.T) {
 			Text:   "SendMessage " + timeNow,
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -35,7 +34,7 @@ func TestSendMessage(t *testing.T) {
 			).WithReplyMarkup(keyboard),
 		)
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -45,7 +44,7 @@ func TestSendMessage(t *testing.T) {
 			Text:   "Send\nMessage",
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -56,7 +55,7 @@ func TestSendMessage(t *testing.T) {
 			tu.Entity("  Pre\nPre").Pre(""),
 		)
 		msg, err := bot.SendMessage(ctx, tu.Message(tu.ID(chatID), text).WithEntities(entities...))
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		assert.Equal(t, msg.Text, text)
 		assert.Equal(t, msg.Entities, entities)
@@ -75,7 +74,7 @@ func TestSendMessage(t *testing.T) {
 
 		msg, err := bot.SendMessage(ctx, tu.Message(tu.ID(chatID), "_😅_* test *_🌗_* Україна* _\U0001FAE5 _*世界*").
 			WithParseMode(telego.ModeMarkdownV2))
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		assert.Equal(t, msg.Text, text)
 		assert.Equal(t, len(msg.Entities), len(entities))
@@ -103,7 +102,7 @@ func TestSendMessage(t *testing.T) {
 			tu.Entity("a  "), tu.Entity("a"),
 		))
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 }
@@ -118,7 +117,7 @@ func TestSendPhoto(t *testing.T) {
 			Caption: "SendPhoto " + timeNow,
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -129,7 +128,7 @@ func TestSendPhoto(t *testing.T) {
 			Caption: "Send\nPhoto \" >",
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -144,7 +143,7 @@ func TestSendPhoto(t *testing.T) {
 			)),
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -153,13 +152,13 @@ func TestSendPhoto(t *testing.T) {
 			ChatID: tu.ID(chatID),
 			Text:   "SendPhoto " + timeNow,
 		})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		msg, err = bot.EditMessageMedia(ctx, tu.EditMessageMedia(
 			tu.ID(chatID), msg.MessageID, tu.MediaPhoto(tu.File(open(img1Jpg))),
 		))
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 }
@@ -175,7 +174,7 @@ func TestSendAudio(t *testing.T) {
 			Thumbnail: telego.ToPtr(tu.File(open(img1Jpg))),
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -187,7 +186,7 @@ func TestSendAudio(t *testing.T) {
 			Thumbnail: telego.ToPtr(tu.File(open(img1Jpg))), // Expected to be not displayed
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 }
@@ -203,7 +202,7 @@ func TestSendPoll(t *testing.T) {
 			IsAnonymous: nil,
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -215,7 +214,7 @@ func TestSendPoll(t *testing.T) {
 			IsAnonymous: telego.ToPtr(false),
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -229,7 +228,7 @@ func TestSendPoll(t *testing.T) {
 			CorrectOptionIDs: []int{0},
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 }
@@ -285,7 +284,7 @@ func TestSendRichMessage(t *testing.T) {
 			},
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -308,7 +307,7 @@ func TestSendRichMessage(t *testing.T) {
 			},
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -329,7 +328,7 @@ _italic text_
 			},
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -358,7 +357,7 @@ Image 3:
 			},
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 
@@ -388,7 +387,7 @@ Image 3:
 			),
 		})
 
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.NotNil(t, msg)
 	})
 }

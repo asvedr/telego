@@ -6,8 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 )
 
 func TestDefaultConstructor_JSONRequest(t *testing.T) {
@@ -39,12 +38,12 @@ func TestDefaultConstructor_JSONRequest(t *testing.T) {
 			d := DefaultConstructor{}
 			data, err := d.JSONRequest(tt.parameters)
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				assert.Nil(t, data)
 				return
 			}
-			require.NoError(t, err)
-			assert.Equalf(t, tt.data, data, "Expected: %q, actual: %q", string(tt.data.BodyRaw), string(data.BodyRaw))
+			assert.NoError(t, err)
+			assert.Equal(t, tt.data, data, "Expected: %q, actual: %q", string(tt.data.BodyRaw), string(data.BodyRaw))
 		})
 	}
 }
@@ -90,19 +89,19 @@ func TestDefaultConstructor_MultipartRequest(t *testing.T) {
 			d := DefaultConstructor{}
 			data, err := d.MultipartRequest(tt.parameters, tt.filesParameters)
 			if tt.isError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				assert.Nil(t, data)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 			assert.Contains(t, data.ContentType, tt.contentType)
 
 			body, err := io.ReadAll(data.BodyStream)
 			if tt.isReadError {
-				require.Error(t, err)
+				assert.Error(t, err)
 				return
 			}
-			require.NoError(t, err)
+			assert.NoError(t, err)
 
 			for _, expectedData := range tt.data {
 				assert.Contains(t, string(body), expectedData)

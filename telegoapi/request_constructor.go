@@ -1,5 +1,3 @@
-//go:generate mockgen -typed -package mock -destination=mock/request_constructor.go github.com/mymmrac/telego/telegoapi RequestConstructor
-
 package telegoapi
 
 import (

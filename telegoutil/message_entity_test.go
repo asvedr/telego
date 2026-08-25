@@ -4,8 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -23,7 +22,7 @@ func TestEntity(t *testing.T) {
 		{Type: text2},
 	}
 	e.entities = testEntities
-	require.Equal(t, testEntities, e.Entities())
+	assert.Equal(t, testEntities, e.Entities())
 
 	assert.Equal(t, 0, e.Entities()[0].Offset)
 	assert.Equal(t, 0, e.Entities()[1].Offset)
@@ -133,7 +132,7 @@ func TestEntityLength(t *testing.T) {
 	)
 
 	assert.Equal(t, "😅 test 🌗 Україна \U0001FAE5 世界", text) //nolint:gosmopolitan
-	require.Len(t, entities, 6)
+	assert.Len(t, entities, 6)
 
 	assert.Equal(t, telego.MessageEntity{
 		Type:   telego.EntityTypeItalic,

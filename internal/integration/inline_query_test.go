@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 	th "github.com/mymmrac/telego/telegohandler"
@@ -22,10 +22,10 @@ func TestInlineQuery(t *testing.T) {
 			telego.ChosenInlineResultUpdates,
 		},
 	})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	bh, err := th.NewBotHandler(bot, updates)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	bh.HandleInlineQuery(func(ctx *th.Context, query telego.InlineQuery) error {
 		t.Log(query.Query)
@@ -51,5 +51,5 @@ func TestInlineQuery(t *testing.T) {
 	})
 
 	err = bh.Start()
-	require.NoError(t, err)
+	assert.NoError(t, err)
 }

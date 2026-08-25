@@ -3,8 +3,7 @@ package telego
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"go.uber.org/mock/gomock"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego/internal/json"
 	ta "github.com/mymmrac/telego/telegoapi"
@@ -26,7 +25,7 @@ func telegoResponse(t *testing.T, v any) *ta.Response {
 	t.Helper()
 
 	byteData, err := json.Marshal(v)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	return &ta.Response{
 		Ok:     true,
 		Result: byteData,
@@ -39,10 +38,10 @@ type mockedBot struct {
 	Bot                    *Bot
 }
 
-func newMockedBot(ctrl *gomock.Controller) mockedBot {
+func newMockedBot() mockedBot {
 	mb := mockedBot{
-		MockAPICaller:          mockapi.NewMockCaller(ctrl),
-		MockRequestConstructor: mockapi.NewMockRequestConstructor(ctrl),
+		MockAPICaller:          mockapi.NewMockCaller(),
+		MockRequestConstructor: mockapi.NewMockRequestConstructor(),
 	}
 
 	//nolint:errcheck

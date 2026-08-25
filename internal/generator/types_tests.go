@@ -25,7 +25,7 @@ func generateTypesTests(types string) {
 import (
 	"testing"
 	
-	"github.com/stretchr/testify/assert"
+	"gitlab.com/asvedr/testify/assert"
 )
 
 func TestTypesInterfaces(t *testing.T) {

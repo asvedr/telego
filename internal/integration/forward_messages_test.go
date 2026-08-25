@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 	th "github.com/mymmrac/telego/telegohandler"
@@ -23,10 +23,10 @@ func TestForwardMessages(t *testing.T) {
 			telego.MessageUpdates,
 		},
 	})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	bh, err := th.NewBotHandler(bot, updates)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	lock := sync.Mutex{}
 	groupedMessages := map[string]chan int{}
@@ -106,5 +106,5 @@ func TestForwardMessages(t *testing.T) {
 	})
 
 	err = bh.Start()
-	require.NoError(t, err)
+	assert.NoError(t, err)
 }

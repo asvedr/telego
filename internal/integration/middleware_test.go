@@ -6,7 +6,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 	th "github.com/mymmrac/telego/telegohandler"
@@ -16,10 +16,10 @@ func TestMiddleware(t *testing.T) {
 	ctx := t.Context()
 
 	updates, err := bot.UpdatesViaLongPolling(ctx, nil)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	bh, err := th.NewBotHandler(bot, updates)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	messages := bh.Group(th.AnyMessageWithFrom())
 
@@ -42,5 +42,5 @@ func TestMiddleware(t *testing.T) {
 	)
 
 	err = bh.Start()
-	require.NoError(t, err)
+	assert.NoError(t, err)
 }

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 	th "github.com/mymmrac/telego/telegohandler"
@@ -20,15 +20,15 @@ func TestGetMessage(t *testing.T) {
 			telego.MessageUpdates,
 		},
 	})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	bh, err := th.NewBotHandler(bot, updates)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 
 	bh.HandleMessage(func(ctx *th.Context, message telego.Message) error {
 		var data []byte
 		data, err = json.Marshal(message)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		t.Log(string(data))
 
@@ -36,5 +36,5 @@ func TestGetMessage(t *testing.T) {
 	})
 
 	err = bh.Start()
-	require.NoError(t, err)
+	assert.NoError(t, err)
 }

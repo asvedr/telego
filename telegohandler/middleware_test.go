@@ -4,8 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"gitlab.com/asvedr/testify/assert"
 
 	"github.com/mymmrac/telego"
 )
@@ -61,6 +60,6 @@ func TestTimeout(t *testing.T) {
 	}
 
 	err := Timeout(time.Minute)(ctx, telego.Update{})
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.True(t, run)
 }

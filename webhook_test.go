@@ -4,25 +4,22 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"go.uber.org/mock/gomock"
+	"gitlab.com/asvedr/testify/assert"
+	"gitlab.com/asvedr/testify/mock"
 
 	"github.com/mymmrac/telego/internal/json"
 	ta "github.com/mymmrac/telego/telegoapi"
 )
 
 func TestBot_UpdatesViaWebhook(t *testing.T) {
-	ctrl := gomock.NewController(t)
-
 	t.Run("success", func(t *testing.T) {
 		b, err := NewBot(validToken, WithDiscardLogger())
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		_, err = b.UpdatesViaWebhook(t.Context(), func(handler WebhookHandler) error {
 			return nil
 		})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 	})
 
 	t.Run("error_webhook_exist", func(t *testing.T) {
@@ -31,41 +28,39 @@ func TestBot_UpdatesViaWebhook(t *testing.T) {
 		_, err := b.UpdatesViaWebhook(t.Context(), func(handler WebhookHandler) error {
 			return nil
 		})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		_, err = b.UpdatesViaWebhook(t.Context(), func(handler WebhookHandler) error {
 			return nil
 		})
-		require.Error(t, err)
+		assert.Error(t, err)
 	})
 
 	t.Run("error_long_polling_exist", func(t *testing.T) {
-		m := newMockedBot(ctrl)
+		m := newMockedBot()
 
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(data, nil).AnyTimes()
+		m.MockRequestConstructor.On("JSONRequest", mock.Anything).
+			Return(data, nil).Maybe()
 
 		resp := telegoResponse(t, []Update{
 			{UpdateID: 1},
 			{UpdateID: 2},
 		})
-		m.MockAPICaller.EXPECT().
-			Call(gomock.Any(), gomock.Any(), gomock.Any()).
-			Return(resp, nil).AnyTimes()
+		m.MockAPICaller.On("Call", mock.Anything, mock.Anything, mock.Anything).
+			Return(resp, nil).Maybe()
 
 		_, err := m.Bot.UpdatesViaLongPolling(t.Context(), nil)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		_, err = m.Bot.UpdatesViaWebhook(t.Context(), func(handler WebhookHandler) error {
 			return nil
 		})
-		require.Error(t, err)
+		assert.Error(t, err)
 	})
 
 	t.Run("end_to_end", func(t *testing.T) {
 		b, err := NewBot(validToken, WithDiscardLogger())
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		pushUpdate := make(chan struct{})
 
@@ -74,7 +69,7 @@ func TestBot_UpdatesViaWebhook(t *testing.T) {
 			Message:  &Message{Text: "ok"},
 		}
 		expectedUpdateBytes, err := json.Marshal(expectedUpdate)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		updates, err := b.UpdatesViaWebhook(t.Context(), func(handler WebhookHandler) error {
 			go func() {
@@ -84,13 +79,13 @@ func TestBot_UpdatesViaWebhook(t *testing.T) {
 			}()
 			return nil
 		})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		pushUpdate <- struct{}{}
 
 		select {
 		case update, ok := <-updates:
-			require.True(t, ok)
+			assert.True(t, ok)
 			update.ctx = nil
 			assert.Equal(t, expectedUpdate, update)
 		case <-time.After(timeout):
@@ -104,21 +99,20 @@ func TestWithWebhookBuffer(t *testing.T) {
 	buffer := uint(1)
 
 	err := WithWebhookBuffer(buffer)(nil, ctx)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, buffer, ctx.updateChanBuffer)
 }
 
 func TestWithWebhookSet(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := newMockedBot(ctrl)
+	m := newMockedBot()
 	ctx := &webhook{}
 
-	m.MockRequestConstructor.EXPECT().JSONRequest(gomock.Any()).Return(&ta.RequestData{
+	m.MockRequestConstructor.On("JSONRequest", mock.Anything).Return(&ta.RequestData{
 		BodyRaw: []byte{},
 	}, nil)
 
-	m.MockAPICaller.EXPECT().Call(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ta.Response{Ok: true}, nil)
+	m.MockAPICaller.On("Call", mock.Anything, mock.Anything, mock.Anything).Return(&ta.Response{Ok: true}, nil)
 
 	err := WithWebhookSet(t.Context(), &SetWebhookParams{})(m.Bot, ctx)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 }

@@ -16,9 +16,8 @@ func generateMethodsTests(methods tgMethods) {
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"go.uber.org/mock/gomock"
+	"gitlab.com/asvedr/testify/assert"
+	"gitlab.com/asvedr/testify/mock"
 
 	ta "github.com/mymmrac/telego/telegoapi"
 )
@@ -26,13 +25,11 @@ import (
 
 	for _, m := range methods {
 		data.WriteString(fmt.Sprintf("func TestBot_%s(t *testing.T) {\n", m.nameTitle))
-		data.WriteString(`	ctrl := gomock.NewController(t)
-	m := newMockedBot(ctrl)
+		data.WriteString(`	m := newMockedBot()
 
 	t.Run("success", func(t *testing.T) {
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(data, nil)
+		m.MockRequestConstructor.On("JSONRequest", mock.Anything).
+			Return(data, nil).Once()
 `)
 
 		respVar := "emptyResp"
@@ -59,35 +56,33 @@ import (
 		}
 
 		data.WriteString(`
-		m.MockAPICaller.EXPECT().
-			Call(gomock.Any(), gomock.Any(), gomock.Any()).
-			Return(` + respVar + `, nil)`)
+		m.MockAPICaller.On("Call", mock.Anything, mock.Anything, mock.Anything).
+			Return(` + respVar + `, nil).Once()`)
 		data.WriteString("\n\n")
 
 		if m.hasReturnValue() {
 			data.WriteString(fmt.Sprintf(`		%s, err := m.Bot.%s(t.Context(), %s)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 		assert.Equal(t, %s, %s)`, actualVar, m.nameTitle, parameters, expectedVar, actualVar))
 		} else {
 			data.WriteString(fmt.Sprintf(`		err := m.Bot.%s(t.Context(), %s)
-		require.NoError(t, err)`, m.nameTitle, parameters))
+		assert.NoError(t, err)`, m.nameTitle, parameters))
 		}
 
 		data.WriteString("\n\t})\n\n")
 
 		data.WriteString(`	t.Run("error", func(t *testing.T) {
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(nil, errTest)`)
+		m.MockRequestConstructor.On("JSONRequest", mock.Anything).
+			Return(nil, errTest).Once()`)
 		data.WriteString("\n\n")
 
 		if m.hasReturnValue() {
 			data.WriteString(fmt.Sprintf(`		%s, err := m.Bot.%s(t.Context(), %s)
-		require.Error(t, err)
+		assert.Error(t, err)
 		assert.Nil(t, %s)`, actualVar, m.nameTitle, parameters, actualVar))
 		} else {
 			data.WriteString(fmt.Sprintf(`		err := m.Bot.%s(t.Context(), %s)
-		require.Error(t, err)`, m.nameTitle, parameters))
+		assert.Error(t, err)`, m.nameTitle, parameters))
 		}
 
 		data.WriteString("\n\t})\n}\n\n")
