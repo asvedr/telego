@@ -9,7 +9,7 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	ta "github.com/mymmrac/telego/telegoapi"
+	ta "github.com/asvedr/telego/telegoapi"
 )
 
 // WithAPICaller sets a custom API caller to use

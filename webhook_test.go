@@ -7,8 +7,8 @@ import (
 	"gitlab.com/asvedr/testify/assert"
 	"gitlab.com/asvedr/testify/mock"
 
-	"github.com/mymmrac/telego/internal/json"
-	ta "github.com/mymmrac/telego/telegoapi"
+	"github.com/asvedr/telego/internal/json"
+	ta "github.com/asvedr/telego/telegoapi"
 )
 
 func TestBot_UpdatesViaWebhook(t *testing.T) {

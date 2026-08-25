@@ -7,7 +7,7 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	tu "github.com/mymmrac/telego/telegoutil"
+	tu "github.com/asvedr/telego/telegoutil"
 )
 
 func TestWebhookInfo(t *testing.T) {

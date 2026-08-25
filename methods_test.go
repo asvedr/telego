@@ -6,7 +6,7 @@ import (
 	"gitlab.com/asvedr/testify/assert"
 	"gitlab.com/asvedr/testify/mock"
 
-	ta "github.com/mymmrac/telego/telegoapi"
+	ta "github.com/asvedr/telego/telegoapi"
 )
 
 func TestBot_GetUpdates(t *testing.T) {

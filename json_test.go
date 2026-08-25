@@ -7,7 +7,7 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego/internal/json"
+	"github.com/asvedr/telego/internal/json"
 )
 
 func TestSetMarshal(t *testing.T) {

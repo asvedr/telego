@@ -7,8 +7,8 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego"
-	tu "github.com/mymmrac/telego/telegoutil"
+	"github.com/asvedr/telego"
+	tu "github.com/asvedr/telego/telegoutil"
 )
 
 func TestSendMessage(t *testing.T) {

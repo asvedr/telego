@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mymmrac/telego"
+	"github.com/asvedr/telego"
 )
 
 const (

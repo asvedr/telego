@@ -225,8 +225,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/mymmrac/telego/internal/json"
-	"github.com/mymmrac/telego/telegoapi"
+	"github.com/asvedr/telego/internal/json"
+	"github.com/asvedr/telego/telegoapi"
 )
 `)
 

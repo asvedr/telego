@@ -12,7 +12,7 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"github.com/mymmrac/telego/internal/json"
+	"github.com/asvedr/telego/internal/json"
 )
 
 // FastHTTPCaller fasthttp implementation of [Caller]

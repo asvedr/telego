@@ -7,7 +7,7 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego"
+	"github.com/asvedr/telego"
 )
 
 const epsilon = 0.00001

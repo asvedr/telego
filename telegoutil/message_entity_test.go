@@ -6,7 +6,7 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego"
+	"github.com/asvedr/telego"
 )
 
 func TestEntity(t *testing.T) {

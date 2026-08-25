@@ -1,7 +1,7 @@
 package telegohandler
 
 import (
-	"github.com/mymmrac/telego"
+	"github.com/asvedr/telego"
 )
 
 // MessageHandler handles message that came from bot

@@ -1,4 +1,4 @@
-module github.com/mymmrac/telego
+module github.com/asvedr/telego
 
 go 1.26
 

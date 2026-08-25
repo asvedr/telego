@@ -6,7 +6,7 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego/internal/json"
+	"github.com/asvedr/telego/internal/json"
 )
 
 func Test_Response_String_and_Error_Error(t *testing.T) {

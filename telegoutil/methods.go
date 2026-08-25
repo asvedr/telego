@@ -3,7 +3,7 @@ package telegoutil
 import (
 	"fmt"
 
-	"github.com/mymmrac/telego"
+	"github.com/asvedr/telego"
 )
 
 // Message creates [telego.SendMessageParams] with required parameters

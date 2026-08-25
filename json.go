@@ -1,6 +1,6 @@
 package telego
 
-import "github.com/mymmrac/telego/internal/json"
+import "github.com/asvedr/telego/internal/json"
 
 // SetJSONMarshal set JSON marshal func used in Telego
 //

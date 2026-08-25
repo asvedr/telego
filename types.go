@@ -8,8 +8,8 @@ import (
 
 	"github.com/valyala/fastjson"
 
-	"github.com/mymmrac/telego/internal/json"
-	"github.com/mymmrac/telego/telegoapi"
+	"github.com/asvedr/telego/internal/json"
+	"github.com/asvedr/telego/telegoapi"
 )
 
 // Update - This object (https://core.telegram.org/bots/api#available-types) represents an incoming update.

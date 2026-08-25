@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/mymmrac/telego/internal/json"
+	"github.com/asvedr/telego/internal/json"
 )
 
 const defaultWebhookUpdateChanBuffer = 128

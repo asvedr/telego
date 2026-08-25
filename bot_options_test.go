@@ -9,9 +9,9 @@ import (
 	"github.com/valyala/fasthttp"
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego/internal/json"
-	ta "github.com/mymmrac/telego/telegoapi"
-	mockapi "github.com/mymmrac/telego/telegoapi/mock"
+	"github.com/asvedr/telego/internal/json"
+	ta "github.com/asvedr/telego/telegoapi"
+	mockapi "github.com/asvedr/telego/telegoapi/mock"
 )
 
 type testCallerType struct{}

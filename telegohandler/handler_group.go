@@ -4,7 +4,7 @@ import (
 	"context"
 	"slices"
 
-	"github.com/mymmrac/telego"
+	"github.com/asvedr/telego"
 )
 
 // route represents handler, middleware or group with respectful predicates

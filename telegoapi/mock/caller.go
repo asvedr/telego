@@ -6,7 +6,7 @@ import (
 
 	"gitlab.com/asvedr/testify/mock"
 
-	"github.com/mymmrac/telego/telegoapi"
+	"github.com/asvedr/telego/telegoapi"
 )
 
 // MockCaller is a mock of [telegoapi.Caller] interface

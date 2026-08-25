@@ -8,9 +8,9 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego"
-	th "github.com/mymmrac/telego/telegohandler"
-	tu "github.com/mymmrac/telego/telegoutil"
+	"github.com/asvedr/telego"
+	th "github.com/asvedr/telego/telegohandler"
+	tu "github.com/asvedr/telego/telegoutil"
 )
 
 func TestInlineQuery(t *testing.T) {

@@ -6,8 +6,8 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"github.com/mymmrac/telego"
-	ta "github.com/mymmrac/telego/telegoapi"
+	"github.com/asvedr/telego"
+	ta "github.com/asvedr/telego/telegoapi"
 )
 
 // ID creates [telego.ChatID] from user's identifier

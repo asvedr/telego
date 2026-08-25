@@ -8,8 +8,8 @@ import (
 
 	"gitlab.com/asvedr/testify/assert"
 
-	"github.com/mymmrac/telego"
-	th "github.com/mymmrac/telego/telegohandler"
+	"github.com/asvedr/telego"
+	th "github.com/asvedr/telego/telegohandler"
 )
 
 func TestMiddleware(t *testing.T) {

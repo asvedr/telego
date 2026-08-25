@@ -3,7 +3,7 @@ package mock
 import (
 	"gitlab.com/asvedr/testify/mock"
 
-	"github.com/mymmrac/telego/telegoapi"
+	"github.com/asvedr/telego/telegoapi"
 )
 
 // MockRequestConstructor is a mock of [telegoapi.RequestConstructor] interface

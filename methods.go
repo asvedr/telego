@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	ta "github.com/mymmrac/telego/telegoapi"
+	ta "github.com/asvedr/telego/telegoapi"
 )
 
 // GetUpdatesParams - Represents parameters of getUpdates method.
