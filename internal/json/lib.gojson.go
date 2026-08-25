@@ -1,8 +1,8 @@
-//go:build !sonic && !stdjson
+//go:build !stdjson
 
 package json
 
-import "github.com/grbit/go-json"
+import json "github.com/asvedr/go-json"
 
 func init() {
 	Marshal = json.Marshal

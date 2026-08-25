@@ -34,7 +34,7 @@ all documentation from Telegram.
 For more detailed documentation, see docs at [telego.pixelbox.dev](https://telego.pixelbox.dev).
 
 > Note: Telego uses [fasthttp](https://github.com/valyala/fasthttp) instead of `net/http`
-> and [go-json](https://github.com/goccy/go-json) instead of `encoding/json` by default (both can be changed).
+> and [go-json](https://github.com/asvedr/go-json) instead of `encoding/json` by default (both can be changed).
 
 ###  :rocket: Powered by
 
@@ -624,12 +624,8 @@ func main() {
 Telego supports multiple build configurations via Go's build tags
 (right now only to change JSON encoding/decoding library):
 
-- No tags - use [goccy/go-json](https://github.com/goccy/go-json)
-- `sonic` - use [bytedance/sonic](https://github.com/bytedance/sonic)
+- No tags - use [asvedr/go-json](https://github.com/asvedr/go-json)
 - `stdjson` - use `encoding/json`
-
-> Note: Use `sonic` only on supported platforms as it has its own limitations, more
-> [here](https://github.com/bytedance/sonic?tab=readme-ov-file#requirement).
 
 If you wish to set JSON encoding/decoding methods to something custom, there are global methods `SetJSONMarshal` and
 `SetJSONUnmarshal` that can be used.

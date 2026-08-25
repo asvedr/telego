@@ -10,7 +10,7 @@ Currently, Telego provides valyala/fasthttp and net/http implementation, but you
 via bot options.
 
 [RequestConstructor] interface represents a general way of constructing [RequestData] used in [Caller].
-Currently, Telego provides only default implementation that uses goccy/go-json instead of encoding/json and std
+Currently, Telego provides only default implementation that uses asvedr/go-json instead of encoding/json and std
 mime/multipart package.
 
 [NamedReader] interface represents a general way of sending files that are provided to [RequestConstructor].

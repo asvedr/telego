@@ -1,4 +1,4 @@
-//go:build stdjson && !sonic
+//go:build stdjson
 
 package json
 
